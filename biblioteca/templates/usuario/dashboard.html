@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Bienvenido al Panel de Usuario</h2>
+<p class="mt-3">Selecciona una de las siguientes secciones según los permisos que tengas asignados:</p>
+<div class="row mt-4">
+    {% if perms.biblioteca.view_autor %}
+    <div class="col-md-3 mb-3">
+        <a href="{% url 'usuario_autor_list' %}" class="btn btn-outline-primary w-100">Gestión de Autores</a>
+    </div>
+    {% endif %}
+    {% if perms.biblioteca.view_libro %}
+    <div class="col-md-3 mb-3">
+        <a href="{% url 'usuario_libro_list' %}" class="btn btn-outline-primary w-100">Gestión de Libros</a>
+    </div>
+    {% endif %}
+    {% if perms.biblioteca.view_usuario %}
+    <div class="col-md-3 mb-3">
+        <a href="{% url 'usuario_usuario_list' %}" class="btn btn-outline-primary w-100">Gestión de Usuarios</a>
+    </div>
+    {% endif %}
+    {% if perms.biblioteca.view_prestamo %}
+    <div class="col-md-3 mb-3">
+        <a href="{% url 'usuario_prestamo_list' %}" class="btn btn-outline-primary w-100">Gestión de Préstamos</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Listado de Usuarios</h2>
+
+{% if perms.biblioteca.add_usuario %}
+<a href="{% url 'usuario_usuario_create' %}" class="btn btn-success mb-3">Añadir Usuario</a>
+{% endif %}
+
+{% if perms.biblioteca.view_usuario %}
+<a href="{% url 'exportar_usuarios_pdf' %}" class="btn btn-outline-primary mb-3 float-end">Exportar a PDF</a>
+{% endif %}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Dirección</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for usuario in object_list %}
+        <tr>
+            <td>{{ usuario.nombre }}</td>
+            <td>{{ usuario.apellido }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>{{ usuario.telefono }}</td>
+            <td>{{ usuario.direccion }}</td>
+            <td>
+                {% if perms.biblioteca.change_usuario %}
+                <a href="{% url 'usuario_usuario_update' usuario.id %}" class="btn btn-warning btn-sm">Editar</a>
+                {% endif %}
+                {% if perms.biblioteca.delete_usuario %}
+                <a href="{% url 'usuario_usuario_delete' usuario.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'usuario_dashboard' %}" class="btn btn-secondary mt-3">Volver</a>
+{% endblock %}

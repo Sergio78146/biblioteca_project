@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block content %}
+<h2>Listado de Libros</h2>
+
+{% if perms.biblioteca.add_libro %}
+<a href="{% url 'usuario_libro_create' %}" class="btn btn-success mb-3">Añadir Libro</a>
+{% endif %}
+
+{% if perms.biblioteca.view_libro %}
+<a href="{% url 'exportar_libros_pdf' %}" class="btn btn-outline-primary mb-3 float-end">Exportar a PDF</a>
+{% endif %}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Género</th>
+            <th>Año</th>
+            <th>Disponible</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for libro in object_list %}
+        <tr>
+            <td>{{ libro.titulo }}</td>
+            <td>{{ libro.autor }}</td>
+            <td>{{ libro.genero }}</td>
+            <td>{{ libro.anio_publicacion }}</td>
+            <td>{{ libro.cantidad_disponible }} / {{ libro.cantidad_total }}</td>
+            <td>
+                {% if perms.biblioteca.change_libro %}
+                <a href="{% url 'usuario_libro_update' libro.id %}" class="btn btn-warning btn-sm">Editar</a>
+                {% endif %}
+                {% if perms.biblioteca.delete_libro %}
+                <a href="{% url 'usuario_libro_delete' libro.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'usuario_dashboard' %}" class="btn btn-secondary mt-3">Volver</a>
+{% endblock %}

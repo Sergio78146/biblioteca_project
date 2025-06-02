@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Listado de Préstamos</h2>
+
+{% if perms.biblioteca.add_prestamo %}
+<a href="{% url 'usuario_prestamo_create' %}" class="btn btn-success mb-3">Añadir Préstamo</a>
+{% endif %}
+
+{% if perms.biblioteca.view_prestamo %}
+<a href="{% url 'exportar_prestamos_pdf' %}" class="btn btn-outline-primary mb-3 float-end">Exportar a PDF</a>
+{% endif %}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Libro</th>
+            <th>Fecha de Préstamo</th>
+            <th>Fecha de Devolución</th>
+            <th>Devuelto</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prestamo in object_list %}
+        <tr>
+            <td>{{ prestamo.usuario }}</td>
+            <td>{{ prestamo.libro }}</td>
+            <td>{{ prestamo.fecha_prestamo }}</td>
+            <td>{{ prestamo.fecha_devolucion|default:"—" }}</td>
+            <td>{{ prestamo.devuelto|yesno:"Sí,No" }}</td>
+            <td>
+                {% if perms.biblioteca.change_prestamo %}
+                <a href="{% url 'usuario_prestamo_update' prestamo.id %}" class="btn btn-warning btn-sm">Editar</a>
+                {% endif %}
+                {% if perms.biblioteca.delete_prestamo %}
+                <a href="{% url 'usuario_prestamo_delete' prestamo.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'usuario_dashboard' %}" class="btn btn-secondary mt-3">Volver</a>
+{% endblock %}
